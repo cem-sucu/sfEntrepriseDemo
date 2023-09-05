@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>Listes des entreprises</h1>
-    {% for element in tableau %}
-        {{ element }}<br>
+    {% for entreprise in entreprises %}
+        {{ entreprise.raisonSociale }}<br>
     {% endfor %}
 {% endblock %}
