@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 //// ces 2 méthode font la même chose c'est a dire :
     // récupérer toutes les entreprises à partir de la base de données et de les afficher dans un modèle Twig,
 
-    
+
 class EntrepriseController extends AbstractController
 {
     ////////// methode 1
@@ -35,7 +35,10 @@ class EntrepriseController extends AbstractController
     #[Route('/entreprise', name: 'app_entreprise')]
     public function index(EntrepriseRepository $EntrepriseRepository): Response
     {
-        $entreprises = $EntrepriseRepository->findAll();
+        // $entreprises = $EntrepriseRepository->findAll();
+
+        //le findby fait ici : SELECT * FROM entreprise ORDER BY raisonSociale
+        $entreprises = $EntrepriseRepository->findBy([], ["raisonSociale"=>"ASC"]);
         return $this->render('entreprise/index.html.twig', [
             'entreprises' => $entreprises
         ]);
