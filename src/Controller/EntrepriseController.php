@@ -37,8 +37,8 @@ class EntrepriseController extends AbstractController
     {
         // $entreprises = $EntrepriseRepository->findAll();
 
-        //le findby fait ici : SELECT * FROM entreprise ORDER BY raisonSociale
-        $entreprises = $EntrepriseRepository->findBy([], ["raisonSociale"=>"ASC"]);
+        //le findby fait ici : SELECT * FROM entreprise WHERE ville = "Strasbourg" ORDER BY raisonSociale ASC
+        $entreprises = $EntrepriseRepository->findBy(["ville"=>"STRASBOURG"],["raisonSociale"=>"ASC"]);
         return $this->render('entreprise/index.html.twig', [
             'entreprises' => $entreprises
         ]);
