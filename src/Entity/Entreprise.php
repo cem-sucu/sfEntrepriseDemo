@@ -61,6 +61,11 @@ class Entreprise
         return $this->dateCreation;
     }
 
+    // eviter de utiliser les getter et setter initiale comme ici on ne prend pas le getDateCreation mais on cree un getDateCreationFr
+    public function getDateCreationFr():string{
+        return $this->dateCreation->format("d-m-Y");
+    }
+
     public function setDateCreation(\DateTimeInterface $dateCreation): static
     {
         $this->dateCreation = $dateCreation;
@@ -102,6 +107,10 @@ class Entreprise
         $this->ville = $ville;
 
         return $this;
+    }
+
+    public function getAdresseComplete(): ?string{
+        return $this->adresse. " ". $this->cp. " ".$this->ville;
     }
 
     /**
