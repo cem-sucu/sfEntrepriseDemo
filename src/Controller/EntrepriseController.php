@@ -3,15 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Entreprise;
+use App\Form\EntrepriseType;
 use App\Repository\EntrepriseRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 //// ces 2 méthode font la même chose c'est a dire :
-    // récupérer toutes les entreprises à partir de la base de données et de les afficher dans un modèle Twig,
+// récupérer toutes les entreprises à partir de la base de données et de les afficher dans un modèle Twig,
 
 
 class EntrepriseController extends AbstractController
@@ -44,6 +46,37 @@ class EntrepriseController extends AbstractController
         ]);
     }
 
+  
+
+    // la route ici ya un ordre de priorité exemple ici entreprise/new doit passé avant entrprise/id
+    // et ne pas oublier d'importer Request -> choisir le httpFoundation
+    #[Route('/entreprise/new/', name: 'new_entreprise')]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $entreprise = new Entreprise();
+
+        $form = $this->createForm(EntrepriseType::class, $entreprise);
+
+        // ici on place le traitement du formulaire
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+          
+            $entreprise = $form->getData();
+            // l'équivalent du prepare en PDO
+            $entityManager->persist($entreprise);
+            // l'equivalent du execute() en PDO
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_entreprise');
+        }
+
+        return $this->render('entreprise/new.html.twig', [
+            'formAddEntreprise' => $form,
+        ]);
+
+    }  
+    
+    
     #[Route('/entreprise/{id}', name: 'show_entreprise')]
     public function show(Entreprise $entreprise) : Response {
         return $this->render('entreprise/show.html.twig', [

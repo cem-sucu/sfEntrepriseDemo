@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Employe;
+use App\Form\EmployeType;
 use App\Repository\EmployeRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,6 +23,22 @@ class EmployeController extends AbstractController
             'employes' => $employes
         ]);
     }
+
+    // la route ici ya un ordre de priorité exemple ici employe/new doit passé avant employe/id
+    // ne pas oublier d'importer Request -> choisir le httpFoundation
+    #[Route('/employe/new/', name: 'new_employe')]
+    public function new(Request $request): Response
+    {
+        $employe = new Employe();
+
+        $form = $this->createForm(EmployeType::class, $employe);
+
+        return $this->render('employe/new.html.twig', [
+            'formAddEmploye' => $form
+        ]);
+
+    }  
+
 
     // toujour cliqure droit importer class : ici en l'occurence importer Employe
     #[Route('/employe/{id}', name: 'show_employe')]
