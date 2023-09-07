@@ -57,7 +57,7 @@ class EntrepriseController extends AbstractController
 
         $form = $this->createForm(EntrepriseType::class, $entreprise);
 
-        // ici on place le traitement du formulaire
+        // ici on place le traitement du formulaire et on ajoute en même temps EntityManagerInterface $entityManager dans "" et on importe
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
           
