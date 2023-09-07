@@ -46,11 +46,7 @@ class EmployeController extends AbstractController
 
             return $this->redirectToRoute('app_employe');
         }
-
-        return $this->render('entreprise/new.html.twig', [
-            'formAddEntreprise' => $form,
-        ]);
-
+        
         return $this->render('employe/new.html.twig', [
             'formAddEmploye' => $form
         ]);
