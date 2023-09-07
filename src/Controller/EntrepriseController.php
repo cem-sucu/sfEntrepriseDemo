@@ -47,13 +47,18 @@ class EntrepriseController extends AbstractController
     }
 
   
-
     // la route ici ya un ordre de priorité exemple ici entreprise/new doit passé avant entrprise/id
     // et ne pas oublier d'importer Request -> choisir le httpFoundation
     #[Route('/entreprise/new/', name: 'new_entreprise')]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    //avec cette route on peut diriger pour faire de l'édition, le id ici c'est pour edit une entreprisde en particulier
+    #[Route('/entreprise/{id}/edit', name: 'edit_entreprise')]
+    public function new_edit(Entreprise $entreprise = null, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $entreprise = new Entreprise();
+        // si l'netreprise n'existe pas on va creer une nouvelle
+        if(!$entreprise){
+            $entreprise = new Entreprise();
+        }
+        
 
         $form = $this->createForm(EntrepriseType::class, $entreprise);
 
@@ -72,6 +77,8 @@ class EntrepriseController extends AbstractController
 
         return $this->render('entreprise/new.html.twig', [
             'formAddEntreprise' => $form,
+            //ici en rajoutant edit en renvoyant le ID, on permet de mettre en place un if else pour le titre de l'édition ou l'ajout d'un entreprise
+            'edit' => $entreprise->getId()
         ]);
 
     }  

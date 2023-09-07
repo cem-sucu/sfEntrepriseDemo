@@ -28,9 +28,13 @@ class EmployeController extends AbstractController
     // la route ici ya un ordre de priorité exemple ici employe/new doit passé avant employe/id
     // ne pas oublier d'importer Request -> choisir le httpFoundation
     #[Route('/employe/new/', name: 'new_employe')]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/employe/{id}/id', name: 'edit_employe')]
+    public function new_edit(Employe $employe = null, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $employe = new Employe();
+        if(!$employe){
+            $employe = new Employe();
+        }
+        
 
         $form = $this->createForm(EmployeType::class, $employe);
 
@@ -46,7 +50,7 @@ class EmployeController extends AbstractController
 
             return $this->redirectToRoute('app_employe');
         }
-        
+
         return $this->render('employe/new.html.twig', [
             'formAddEmploye' => $form
         ]);
