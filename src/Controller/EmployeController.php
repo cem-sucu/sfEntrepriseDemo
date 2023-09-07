@@ -58,6 +58,15 @@ class EmployeController extends AbstractController
     }  
 
 
+    #[Route('/employe/{id}', name: 'delete_employe')]
+    public function delete(Employe $employe, EntityManagerInterface $entityManager)
+    {
+        $entityManager->remove($employe);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_employe');
+    }
+
     // toujour cliqure droit importer class : ici en l'occurence importer Employe
     #[Route('/employe/{id}', name: 'show_employe')]
     public function show(Employe $employe) : Response {

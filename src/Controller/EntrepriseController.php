@@ -80,8 +80,16 @@ class EntrepriseController extends AbstractController
             //ici en rajoutant edit en renvoyant le ID, on permet de mettre en place un if else pour le titre de l'édition ou l'ajout d'un entreprise
             'edit' => $entreprise->getId()
         ]);
-
     }  
+
+    #[Route('/entreprise/{id}', name: 'delete_entreprise')]
+    public function delete(Entreprise $entreprise, EntityManagerInterface $entityManager)
+    {
+        $entityManager->remove($entreprise);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_entreprise');
+    }
     
     
     #[Route('/entreprise/{id}', name: 'show_entreprise')]
